@@ -1,21 +1,29 @@
+#skrypt stworzony na potrzeby pomiaru czasu wykonywania pomiarów odleglosci przy uzyciu mikrokontrolera Arduino Uno
+#script created for measuring the time of distance measurements using the Arduino Uno microcontrolle
 import serial
 import time
 
 port = 'COM7'
 baudrate = 9600
 
-# połączenie szeregowe
+#polaczenie szeregowe
+#serial communication
 ser = serial.Serial(port, baudrate)
 
 while True:
-    # Pobierz aktualną godzinę z systemu operacyjnego
+    #pobierz aktualna godzine z systemu operacyjnego
+    #fetch the current time from the operating system
     current_time = time.strftime('%H:%M:%S')
-    # Wyślij godzinę przez port szeregowy
+    
+    #wyslij godzine przez port szeregowy
+    #send the time through the serial port
     ser.write(current_time.encode())
-    # Odczytaj odpowiedź z Arduino, jeśli oczekujesz potwierdzenia
+    
+    #odczytaj odpowiedz z Arduino
+    #read the response from Arduino
     response = ser.readline().decode().strip()
     print(response)
-    #time.sleep(1)  # Poczekaj 1 sekundę przed wysłaniem kolejnej godziny
 
-# Zamknij połączenie szeregowe
+#zamknij polaczenie szeregowe
+#close the serial connection
 ser.close()
