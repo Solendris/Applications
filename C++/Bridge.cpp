@@ -1,3 +1,8 @@
+// Ten kod to implementacja wzorca projektowego Most (Bridge) w języku C++.
+// Wzorzec Most oddziela hierarchie klas abstrakcyjnych od implementacji, co pozwala na zmianę lub rozwijanie ich niezależnie.
+// This code is an implementation of the Bridge design pattern in C++. 
+// The Bridge pattern separates the abstraction hierarchy from its implementation, allowing them to vary independently or be extended without affecting each other.
+
 #include <iostream>
 using namespace std;
 
