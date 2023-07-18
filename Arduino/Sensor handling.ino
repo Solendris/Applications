@@ -10,6 +10,7 @@
 VL53L0X sensor;
 
 void setup() {
+  // Ustawienie PINow i ustanowienie polaczenia szeregowego
   pinMode(PIRsensor, INPUT); // Set PIR sensor pin as input
   pinMode(trigPin, OUTPUT); // Set trigger pin as output for the hypersonic sensor
   pinMode(echoPin, INPUT); // Set echo pin as input for the hypersonic sensor
@@ -20,20 +21,25 @@ void setup() {
 void loop() {
   int PIRsensor_value = 0;
   long time, distance;
+  // Odczytanie stanu przycisku
   int buttonState = digitalRead(buttonPin); // Read the state of the button
 
   if (Serial.available() > 0) {
+    // Odczytanie czasu przez polaczenie szeregowe
     // Read the time from the serial port
     String received_time = Serial.readStringUntil('\n');
 
+    // Podzial otrzymanego czasu na godziny, minuty, sekundy
     // Parse the received time into hour, minute, and second values
     int hour = received_time.substring(0, 2).toInt();
     int minute = received_time.substring(3, 5).toInt();
     int second = received_time.substring(6, 8).toInt();
 
+    // Ustawienie czasu Arduino
     // Set the internal time of Arduino
     setTime(hour, minute, second, 1, 1, 2023);
 
+    // Koniec odczytu z portu szeregowego
     // End reading from the serial port
     Serial.flush();
   }
@@ -50,6 +56,7 @@ void loop() {
     Serial.print(":");
     Serial.println(second());
 
+    // Pomiar przez czujnik hipersoniczny
     // Hypersonic sensor measurement
     for (int i = 0; i < 100; i++) {
       digitalWrite(trigPin, LOW);
@@ -65,6 +72,7 @@ void loop() {
       Serial.println(" mm (Hypersonic sensor)");
     }
 
+    // Pomiar przez czujnik ToF
     // VL53L0X sensor measurement
     for (int i = 0; i < 100; i++) {
       Wire.begin();
