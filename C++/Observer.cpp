@@ -1,181 +1,243 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <string>
 #include <fstream>
 
-typedef std::string STATE;
+using namespace std;
+
+typedef int STATE;
+STATE number;
 
 class Observer;
-
+int read_number = 0;
 class Subject
 {
- public:
-  Subject() : m_nSubjectState("") {}
-  virtual ~Subject();
+public:
+	Subject() : m_nSubjectState(-1) {}
+	virtual ~Subject();
 
-  void Notify();
-  void Attach(Observer* pOberver);
-  void Detach(Observer* pOberver);
+	void Notify();
+	void Attach(Observer* pObserver);
+	void Detach(Observer* pOberver);
 
-  virtual void SetState(STATE nState);
-  virtual STATE GetState();
+	virtual void SetState(STATE nState);
+	virtual STATE GetState();
 
- protected:
-  STATE m_nSubjectState;
-  std::list<Observer*> m_ListObserver;
+protected:
+	STATE m_nSubjectState;
+	std::list<Observer*> m_ListObserver;
 };
 
 class Observer
 {
- public:
-  Observer() : m_nObserverState("") {}
-  virtual ~Observer() {}
-  virtual void Update(Subject* pSubject) = 0;
+public:
+	Observer() : m_nObserverState(-1) {}
+	virtual ~Observer() {}
+	virtual void Update(Subject* pSubject) = 0;
 
- protected:
-  STATE m_nObserverState;
+protected:
+	STATE m_nObserverState;
 };
 
 class ConcreateSubject : public Subject
 {
- public:
-  ConcreateSubject() : Subject() {}
-  virtual ~ConcreateSubject() {}
+public:
+	ConcreateSubject() : Subject() {}
+	virtual ~ConcreateSubject() {}
 
-  virtual void SetState(STATE nState);
-  virtual STATE GetState();
-  void Update(Subject* pSubject);
+	virtual void SetState(STATE nState);
+	virtual STATE GetState();
+	void Update(Subject* pSubject);
 };
 
 class ConcreateObserver : public Observer
 {
- public:
-  //ConcreateObserver() : Observer() {nick = "nick"; status = "empty";}
-  ConcreateObserver(std::string name,std::string status_) : Observer() {nick = name;status = status_;
+public:
+	/*//ofstream file;
 
-  //const char * filename = nick;
-  //strcat(nick,".txt");
-  file.open((nick+".txt").c_str());
-  };
-  virtual ~ConcreateObserver() {file.close();}
-  virtual void Update(Subject* pSubject);
-  std::string nick;
-  std::string status;
-  std::ofstream file;
+	//ConcreateObserver(string file);
+	virtual ~ConcreateObserver() { file.close(); }
+	virtual void Update(Subject* pSubject);
+	void getStatus();*/
+
+	ConcreateObserver() : Observer() {}
+	virtual ~ConcreateObserver() {}
+	virtual void Update(Subject* pSubject);
+
+
 };
+/*
+ConcreateObserver::ConcreateObserver(std::string f) : Observer() {
+int n = f.length();
+const char *fi = f.c_str();
+file.open(fi);
+}
 
+void ConcreateObserver::getStatus() {
+	file << m_nObserverState << endl;
+}*/
 
+class ConcreateObserver2 : public Observer
+{
+public:
+	ConcreateObserver2() : Observer() {}
+	virtual ~ConcreateObserver2() {}
+	virtual void Update(Subject* pSubject);
+};
 
 void Subject::Attach(Observer* pObserver)
 {
- std::cout << "Attach an Observer\n";
- m_ListObserver.push_back(pObserver);
+	//cout << "Dodano uzytkownika\n";
+	m_ListObserver.push_back(pObserver);
 }
 
 void Subject::Detach(Observer* pOberver)
 {
- std::list<Observer*>::iterator iter;
- iter = std::find(m_ListObserver.begin(),m_ListObserver.end(),pOberver);
- if (m_ListObserver.end() != iter)
- {
-  m_ListObserver.erase(iter);
- }
- std::cout << "Detach an Observer\n";
+	list<Observer*>::iterator iter;
+	iter = find(m_ListObserver.begin(), m_ListObserver.end(), pOberver);
+	if (m_ListObserver.end() != iter)
+	{
+		m_ListObserver.erase(iter);
+	}
+	//cout << "Usunieto uzytkownika\n";
 }
 
 void Subject::Notify()
 {
- std::cout << "Notify Observer's State\n";
- std::list<Observer*>::iterator iter1,iter2;
- iter1 = m_ListObserver.begin();
- iter2 = m_ListObserver.end();
- for (;iter1 != iter2; ++iter1)
- {
-  (*iter1)->Update(this);
- }
+	//cout << "Opisz stan uzytkownika\n";
+	list<Observer*>::iterator iter1, iter2;
+	iter1 = m_ListObserver.begin();
+	iter2 = m_ListObserver.end();
+	for (; iter1 != iter2; ++iter1)
+	{
+		(*iter1)->Update(this);
+	}
 }
 
 void Subject::SetState(STATE nState)
 {
- std::cout << "SetState By Subject\n";
- m_nSubjectState = nState;
+
+	//cout << "Ustaw stan uzytkownika\n";
+	m_nSubjectState = nState;
+	
 }
 
 STATE Subject::GetState()
 {
- std::cout << "GetState By Subject\n";
- return m_nSubjectState;
+	//cout << "Pobierz stan uzytkownika\n";
+	return m_nSubjectState;
 }
 
 Subject::~Subject()
 {
- std::list<Observer*>::iterator iter1,iter2,temp;
- iter1 = m_ListObserver.begin();
- iter2 = m_ListObserver.end();
- for (;iter1 != iter2;)
- {
-  temp = iter1;
-  ++iter1;
-  delete(*temp);
- }
- m_ListObserver.clear();
+	list<Observer*>::iterator iter1, iter2, temp;
+	iter1 = m_ListObserver.begin();
+	iter2 = m_ListObserver.end();
+	for (; iter1 != iter2;)
+	{
+		temp = iter1;
+		++iter1;
+		delete(*temp);
+	}
+	m_ListObserver.clear();
 }
 
 void ConcreateSubject::SetState(STATE nState)
 {
- std::cout << "SetState By ConcreateSubject\n";
- m_nSubjectState = nState;
+	
+	m_nSubjectState = nState;
+	cout << "Ustaw numer uzytkownika\n";
+	cin >> read_number;
+	if (read_number > 0) {
+		number = read_number;
+	}	
+	else {
+		cout << "Nieprawidlowy numer uzytkownika!\n";
+		number = 0;
+	}
+		
 }
 
 STATE ConcreateSubject::GetState()
 {
- std::cout << "GetState By ConcreateSubject\n";
- return m_nSubjectState;
+	//cout << "Pobierz stan konkretnego uzytkownika\n";
+	return m_nSubjectState;
 }
 
 void ConcreateObserver::Update(Subject* pSubject)
 {
-
- if (NULL == pSubject)
- {
-  return;
- }
- m_nObserverState = pSubject->GetState();
- file << "The ObserverState is " << m_nObserverState << std::endl;
- //file << std::endl << nick << " status update - " << status << std::endl;
+	if (NULL == pSubject)
+	{
+		return;
+	}
+	m_nObserverState = pSubject->GetState();
+	//cout << "Stan uzytkownika to: " << m_nObserverState << endl;
 }
+
+void ConcreateObserver2::Update(Subject* pSubject)
+{
+	if (NULL == pSubject)
+	{
+		return;
+	}
+	m_nObserverState = pSubject->GetState();
+	if (pSubject->GetState() == 0) {
+		cout << "Uzytkownik o numerze "<<number<<" jest nieaktywny!" << endl;
+	}
+	else if (pSubject->GetState() == 1) {
+		cout << "Uzytkownik o numerze " << number << " jest aktywny!" << endl;
+	}
+	else if (pSubject->GetState() == 2) {
+		cout << "Uzytkownik o numerze " << number << " zaraz wraca!" << endl;
+	}
+	else {
+		cout << "Podano zly stan!" << endl;
+	}
+	
+}
+
 
 int main()
 {
-    /*
- Observer *p1 = new ConcreateObserver;
- Observer *p2 = new ConcreateObserver;
- Observer *p3 = new ConcreateObserver("fas");
- Subject* p = new ConcreateSubject;
- p -> Attach(p3);
- p->Attach(p1);
- p->Attach(p2);
- p->SetState(4);
- p->Notify();
- p->Detach(p1);
- p->SetState(10);
-*/
+	/* dziala dla wartosci wpisanych "z palca"
+	 int tmpState = 0;
+	Observer *p1 = new ConcreateObserver;
+	Observer *p2 = new ConcreateObserver2;
+	Subject* p = new ConcreateSubject;
+	p->Attach(p1);
+	p->Attach(p2);
+	cout << "Ustaw stan konkretnego uzytkownika\n";
+	cout << "Stan 0: jestem nieaktywny" << endl;
+	cout << "Stan 1: jestem aktywny" << endl;
+	cout << "Stan 2: zaraz wracam" << endl;
+	cin >> tmpState;
+	p->SetState(tmpState);
+	p->Notify();
+	p->Detach(p1);
+	cout << "Ustaw stan konkretnego uzytkownika\n";
+	cout << "Stan 0: jestem nieaktywny" << endl;
+	cout << "Stan 1: jestem aktywny" << endl;
+	cout << "Stan 2: zaraz wracam" << endl;
+	cin >> tmpState;
+	p->SetState(tmpState);
+	p->Notify();
+	delete p;
+	*/
 
-Observer *Tomek = new ConcreateObserver("Tomek","dostepny");
-Observer *Ania = new ConcreateObserver("Ania","zaraz wracam");
-Observer *Kasia = new ConcreateObserver("Kasia","niedostepny");
+	//wersja "na sztywno" (by nie wpisywac wszystkiego recznie)
+	Observer *p1 = new ConcreateObserver;
+	Observer *p2 = new ConcreateObserver2;
+	Subject* p = new ConcreateSubject;
+	p->Attach(p1);
+	p->Attach(p2);
+	p->SetState(1);
+	p->Notify();
+	p->Detach(p1);
+	p->SetState(2);
+	p->Notify();
+	delete p;
+	
 
- Subject* p = new ConcreateSubject;
- p -> Attach(Tomek);
- p -> Attach(Ania);
- p->SetState("niedostepny");
- p->Notify();
- p->Detach(Ania);
- p->Notify();
- p ->Attach(Ania);
- p-> Attach (Kasia);
- p->SetState("dostepny");
- p -> Notify();
- delete p;
- return 0;
+	return 0;
 }
