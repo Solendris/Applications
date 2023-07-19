@@ -26,7 +26,7 @@ public:
 
 protected:
 	STATE m_nSubjectState;
-	std::list<Observer*> m_ListObserver;
+	list<Observer*> m_ListObserver;
 };
 
 class Observer
@@ -54,29 +54,12 @@ public:
 class ConcreateObserver : public Observer
 {
 public:
-	/*//ofstream file;
-
-	//ConcreateObserver(string file);
-	virtual ~ConcreateObserver() { file.close(); }
-	virtual void Update(Subject* pSubject);
-	void getStatus();*/
-
 	ConcreateObserver() : Observer() {}
 	virtual ~ConcreateObserver() {}
 	virtual void Update(Subject* pSubject);
 
 
 };
-/*
-ConcreateObserver::ConcreateObserver(std::string f) : Observer() {
-int n = f.length();
-const char *fi = f.c_str();
-file.open(fi);
-}
-
-void ConcreateObserver::getStatus() {
-	file << m_nObserverState << endl;
-}*/
 
 class ConcreateObserver2 : public Observer
 {
@@ -88,7 +71,6 @@ public:
 
 void Subject::Attach(Observer* pObserver)
 {
-	//cout << "Dodano uzytkownika\n";
 	m_ListObserver.push_back(pObserver);
 }
 
@@ -100,12 +82,10 @@ void Subject::Detach(Observer* pOberver)
 	{
 		m_ListObserver.erase(iter);
 	}
-	//cout << "Usunieto uzytkownika\n";
 }
 
 void Subject::Notify()
 {
-	//cout << "Opisz stan uzytkownika\n";
 	list<Observer*>::iterator iter1, iter2;
 	iter1 = m_ListObserver.begin();
 	iter2 = m_ListObserver.end();
@@ -117,15 +97,12 @@ void Subject::Notify()
 
 void Subject::SetState(STATE nState)
 {
-
-	//cout << "Ustaw stan uzytkownika\n";
 	m_nSubjectState = nState;
-	
+
 }
 
 STATE Subject::GetState()
 {
-	//cout << "Pobierz stan uzytkownika\n";
 	return m_nSubjectState;
 }
 
@@ -145,23 +122,22 @@ Subject::~Subject()
 
 void ConcreateSubject::SetState(STATE nState)
 {
-	
+
 	m_nSubjectState = nState;
 	cout << "Ustaw numer uzytkownika\n";
 	cin >> read_number;
 	if (read_number > 0) {
 		number = read_number;
-	}	
+	}
 	else {
 		cout << "Nieprawidlowy numer uzytkownika!\n";
 		number = 0;
 	}
-		
+
 }
 
 STATE ConcreateSubject::GetState()
 {
-	//cout << "Pobierz stan konkretnego uzytkownika\n";
 	return m_nSubjectState;
 }
 
@@ -172,7 +148,6 @@ void ConcreateObserver::Update(Subject* pSubject)
 		return;
 	}
 	m_nObserverState = pSubject->GetState();
-	//cout << "Stan uzytkownika to: " << m_nObserverState << endl;
 }
 
 void ConcreateObserver2::Update(Subject* pSubject)
@@ -194,7 +169,7 @@ void ConcreateObserver2::Update(Subject* pSubject)
 	else {
 		cout << "Podano zly stan!" << endl;
 	}
-	
+
 }
 
 
@@ -237,7 +212,6 @@ int main()
 	p->SetState(2);
 	p->Notify();
 	delete p;
-	
 
 	return 0;
 }
