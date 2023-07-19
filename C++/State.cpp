@@ -159,7 +159,7 @@ int main()
 		if (Znak == '0') {
 			pContext->ChangeState(Postoj);
 			pContext->Request();
-			cout << "koniecsss";
+			cout << "koniec";
 		}
 		else if (Znak == '1') {
 			pContext->ChangeState(Jazda_Wprzod);
@@ -175,5 +175,3 @@ int main()
 
 	return 0;
 }
-
-
