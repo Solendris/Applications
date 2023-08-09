@@ -1,12 +1,12 @@
 import string
 
-#szyfrowanie z użyciem tablicy ASCII
+# Encryption using ASCII table
 
 pierwszy = ('ada', [1, 1, 1])
 drugi = ('mysz', [1, 2, 3])
 trzeci = ('Ala ma kota', [1, 2, 3])
 
-def lenBezSpacji(ciag): #ilosc znaków w ciągu bez spacji
+def lenBezSpacji(ciag): # Number of characters in the string excluding spaces
     wynik=""
     for znak in ciag:
         if znak != " ":
@@ -14,7 +14,7 @@ def lenBezSpacji(ciag): #ilosc znaków w ciągu bez spacji
     return len(wynik)
 
 
-def szyfruj(krotka): #funkcja szyfrująca
+def szyfruj(krotka): # Encrypting function
     ciag = krotka[0]
     dlugoscCiagu=lenBezSpacji(ciag)
 
@@ -28,15 +28,12 @@ def szyfruj(krotka): #funkcja szyfrująca
         if znak != " ":
             if znak not in string.ascii_lowercase:
                 zaszyfrowany += znak
-                #print(znak, klucz[i % iloscKluczy], znak)
             else:
                 po=ord(znak)+klucz[i % iloscKluczy]
                 if po > 122:
                     po=po-122+96
-                #print(znak, klucz[i % iloscKluczy], chr(po))
                 zaszyfrowany+=chr(po)
         else:
-            #print(" ")
             zaszyfrowany += " "
         i += 1
 
